@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+  devops-app:
+    image: atom52025/devops-app:1.0
+    build: ./devops-app
+    ports:
+      - "3001:3001"
+  devops-web:
+    image: atom52025/devops-web:1.0
+    build: ./devops-web
+    ports:
+      - "8080:80"
+  devops-db-app:
+    image: atom52025/devops-db-app:1.0
+    build: ./devops-db-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    restart: always 
+  db:
+    image: mysql:5.7
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: database
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+volumes:
+  mysql_data:
+            
